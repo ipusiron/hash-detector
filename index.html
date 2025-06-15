@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>ハッシュ識別ツール</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+    }
+    input {
+      width: 100%;
+      padding: 0.5em;
+      font-size: 1em;
+    }
+    button {
+      margin-top: 1em;
+      padding: 0.5em 1em;
+      font-size: 1em;
+    }
+    #result {
+      margin-top: 1em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔍 ハッシュ識別ツール</h1>
+
+  <input type="text" id="hashInput" placeholder="ハッシュ値を入力してください">
+  <button onclick="identifyHash()">判定する</button>
+
+  <div id="result"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
