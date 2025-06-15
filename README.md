@@ -50,7 +50,7 @@
 
 ## 📜 ライセンス
 
-MIT License
+[MIT License](LICENSE)
 
 ---
 
