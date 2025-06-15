@@ -20,3 +20,13 @@ function identifyHash() {
   }
 }
 
+function setHash(el) {
+  const inputBox = document.getElementById('hashInput');
+  inputBox.value = el.textContent;
+  identifyHash();
+}
+
+// 🔄 入力に応じて即時判定
+document.getElementById('hashInput').addEventListener('input', identifyHash);
+
+
