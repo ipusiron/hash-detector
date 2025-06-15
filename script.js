@@ -28,5 +28,6 @@ function setHash(el) {
 
 // 🔄 入力に応じて即時判定
 document.getElementById('hashInput').addEventListener('input', identifyHash);
+window.setHash = setHash;
 
 
