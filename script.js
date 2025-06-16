@@ -16,9 +16,7 @@ function identifyHash() {
   if (match) {
     result.innerHTML = `
   このハッシュはおそらく「${match.name}」です。<br>
-  <a href="https://crackstation.net/" target="_blank" rel="noopener noreferrer">
-    🔗 CrackStationを開く
-  </a>
+  <a href="https://crackstation.net/" target="_blank" rel="noopener noreferrer">🔗 CrackStationを開く</a>
   <button onclick="copyHash()">📋 コピー</button>
 `;
   } else {
