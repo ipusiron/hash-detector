@@ -67,3 +67,5 @@ document.getElementById('hashInput').addEventListener('input', identifyHash);
 
 // 🔁 HTMLから setHash() を呼べるように公開
 window.setHash = setHash;
+
+window.copyHash = copyHash;
