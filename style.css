@@ -49,3 +49,8 @@ code:hover {
   white-space: nowrap;
   border: 0;
 }
+
+/* Notification styling */
+.message {
+  z-index: 1000;
+}
