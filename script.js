@@ -16,8 +16,8 @@ function identifyHash() {
   if (match) {
     result.innerHTML = `
   このハッシュはおそらく「${match.name}」です。<br>
+  🔎 判定根拠：${reason}<br>
   <a href="https://crackstation.net/" target="_blank" rel="noopener noreferrer">🔗 CrackStationを開く</a>
-  <button onclick="copyHash()">📋 コピー</button>
 `;
   } else {
     result.textContent = 'ハッシュの形式を特定できませんでした。';
