@@ -11,6 +11,11 @@ function identifyHash() {
     { name: 'NTLM', regex: /^[A-F0-9]{32}$/, hashcat: 1000 }
   ];
 
+  if (input === '') {
+    result.textContent = '';
+    return;
+  }
+
   const match = patterns.find(p => p.regex.test(input));
 
   if (match) {
@@ -34,7 +39,9 @@ function identifyHash() {
       このハッシュはおそらく「${match.name}」です。<br>
       🔎 判定根拠：${reason}<br>
       💻 Hashcat mode: ${match.hashcat}<br>
-      <a href="https://crackstation.net/" target="_blank" rel="noopener noreferrer">🔗 CrackStationを開く</a>
+      <a href="https://crackstation.net/" target="_blank" rel="noopener noreferrer">
+        🔗 CrackStationを開く
+      </a>
     `;
   } else {
     result.textContent = 'ハッシュの形式を特定できませんでした。';
