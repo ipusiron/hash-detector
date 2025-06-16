@@ -17,9 +17,9 @@
 
 以下は実際の画面例です（GitHub Pages上の表示例）
 
-<p align="center" style="border: 2px solid #ccc; padding: 8px;">
-  <img src="screen_sample.png" alt="ハッシュ識別ツールのスクリーンショット" width="600">
-</p>
+<div align="center" style="border: 3px solid #444; padding: 12px; display: inline-block;">
+  <img src="screen_sample.png" alt="画面サンプル" width="600">
+</div>
 
 ---
 
