@@ -11,6 +11,20 @@ function identifyHash() {
     { name: 'NTLM', regex: /^[A-F0-9]{32}$/ }
   ];
 
+  let reason = '';
+
+  if (match.name === 'MD5') {
+    reason = '32文字の16進数 → MD5の形式と一致';
+  } else if (match.name === 'SHA-1') {
+    reason = '40文字の16進数 → SHA-1形式と一致';
+  } else if (match.name === 'SHA-256') {
+    reason = '64文字の16進数 → SHA-256形式と一致';
+  } else if (match.name === 'bcrypt') {
+    reason = '先頭が $2a$ で始まる → bcrypt形式';
+  } else if (match.name === 'NTLM') {
+    reason = '32文字の英大文字 → NTLM形式の可能性';
+  }
+
   const match = patterns.find(p => p.regex.test(input));
 
   if (match) {
