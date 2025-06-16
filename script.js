@@ -53,12 +53,25 @@ function setHash(el) {
   identifyHash();
 }
 
+function showMessage(text) {
+  const messageEl = document.getElementById('message');
+  if (messageEl) {
+    // Clear previous message to ensure screen readers announce updates
+    messageEl.textContent = '';
+    setTimeout(() => {
+      messageEl.textContent = text;
+    }, 0);
+  }
+}
+
 function copyHash() {
   const hash = document.getElementById('hashInput').value.trim();
   navigator.clipboard.writeText(hash).then(() => {
     alert("ハッシュをコピーしました！");
+    showMessage('ハッシュをコピーしました！');
   }).catch(err => {
     alert("コピーに失敗しました：" + err);
+    showMessage('コピーに失敗しました: ' + err);
   });
 }
 
