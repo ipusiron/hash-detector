@@ -35,3 +35,17 @@ code {
 code:hover {
   background: #e0e0e0;
 }
+
+/* Screen reader only text */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
