@@ -15,11 +15,9 @@
 
 ## 📸 サンプル画面
 
-以下は実際の画面例です（GitHub Pages上の表示例）
-
-<div align="center" style="border: 3px solid #444; padding: 12px; display: inline-block;">
-  <img src="screen_sample.png" alt="画面サンプル" width="600">
-</div>
+> 以下は実際の画面例です（GitHub Pages上の表示例）  
+>
+> ![ハッシュ識別ツールのスクリーンショット](screen_sample.png)
 
 ---
 
