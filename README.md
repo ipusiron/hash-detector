@@ -15,9 +15,9 @@
 
 ## 📸 サンプル画面
 
-> 以下は実際の画面例です（GitHub Pages上の表示例
+以下は実際の画面例です（GitHub Pages上の表示例）
 
-<p align="center" style="border: 1px solid #ccc; padding: 8px;">
+<p align="center" style="border: 2px solid #ccc; padding: 8px;">
   <img src="screen_sample.png" alt="ハッシュ識別ツールのスクリーンショット" width="600">
 </p>
 
