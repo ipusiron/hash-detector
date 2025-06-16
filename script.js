@@ -47,3 +47,5 @@ function identifyHash() {
     result.textContent = 'ハッシュの形式を特定できませんでした。';
   }
 }
+
+window.setHash = setHash;
