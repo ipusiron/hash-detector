@@ -8,7 +8,7 @@ function identifyHash() {
     { name: 'SHA-256', regex: /^[a-f0-9]{64}$/i, hashcat: 1400 },
     { name: 'SHA-512', regex: /^[a-f0-9]{128}$/i, hashcat: 1700 },
     { name: 'bcrypt', regex: /^\$2[aby]?\$[0-9]{2}\$[./A-Za-z0-9]{53}$/, hashcat: 3200 },
-    { name: 'NTLM', regex: /^[A-F0-9]{32}$/, hashcat: 1000 }
+    { name: 'NTLM', regex: /^[A-Fa-f0-9]{32}$/, hashcat: 1000 }
   ];
 
   if (input === '') {
