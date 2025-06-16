@@ -48,4 +48,23 @@ function identifyHash() {
   }
 }
 
+function setHash(el) {
+  const inputBox = document.getElementById('hashInput');
+  inputBox.value = el.textContent;
+  identifyHash();
+}
+
+function copyHash() {
+  const hash = document.getElementById('hashInput').value.trim();
+  navigator.clipboard.writeText(hash).then(() => {
+    alert("ハッシュをコピーしました！");
+  }).catch(err => {
+    alert("コピーに失敗しました：" + err);
+  });
+}
+
+// 🔄 入力に応じて即時判定
+document.getElementById('hashInput').addEventListener('input', identifyHash);
+
+// 🔁 HTMLから setHash() を呼べるように公開
 window.setHash = setHash;
