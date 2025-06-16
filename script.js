@@ -14,7 +14,7 @@ function identifyHash() {
   const match = patterns.find(p => p.regex.test(input));
 
   if (match) {
-    result.textContent = `このハッシュはおそらく「${match.name}」です。`;
+    result.innerHTML = `このハッシュはおそらく「${match.name}」です。<br><a href="https://www.google.com/search?q=${encodeURIComponent(input + ' site:crackstation.net')}" target="_blank">🔎 CrackStationで検索</a>`;
   } else {
     result.textContent = 'ハッシュの形式を特定できませんでした。';
   }
