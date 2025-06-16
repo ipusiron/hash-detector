@@ -14,7 +14,7 @@ function identifyHash() {
   const match = patterns.find(p => p.regex.test(input));
 
   if (match) {
-    result.innerHTML = `このハッシュはおそらく「${match.name}」です。<br><a href="https://www.google.com/search?q=${encodeURIComponent(input + ' site:crackstation.net')}" target="_blank">🔎 CrackStationで検索</a>`;
+    result.innerHTML = `このハッシュはおそらく「${match.name}」です。<br><a href="https://crackstation.net/" target="_blank">🔎 CrackStationで検索</a> <button onclick="copyHash('${input}')">📋 コピー</button>`;
   } else {
     result.textContent = 'ハッシュの形式を特定できませんでした。';
   }
@@ -24,6 +24,15 @@ function setHash(el) {
   const inputBox = document.getElementById('hashInput');
   inputBox.value = el.textContent;
   identifyHash();
+}
+
+function copyHash() {
+  const hash = document.getElementById('hashInput').value.trim();
+  navigator.clipboard.writeText(hash).then(() => {
+    alert("ハッシュをコピーしました！");
+  }).catch(err => {
+    alert("コピーに失敗しました：" + err);
+  });
 }
 
 // 🔄 入力に応じて即時判定
