@@ -14,7 +14,13 @@ function identifyHash() {
   const match = patterns.find(p => p.regex.test(input));
 
   if (match) {
-    result.innerHTML = `このハッシュはおそらく「${match.name}」です。<br><a href="https://crackstation.net/" target="_blank">🔎 CrackStationで検索</a> <button onclick="copyHash('${input}')">📋 コピー</button>`;
+    result.innerHTML = `
+  このハッシュはおそらく「${match.name}」です。<br>
+  <a href="https://crackstation.net/" target="_blank" rel="noopener noreferrer">
+    🔗 CrackStationを開く
+  </a>
+  <button onclick="copyHash()">📋 コピー</button>
+`;
   } else {
     result.textContent = 'ハッシュの形式を特定できませんでした。';
   }
