@@ -13,8 +13,10 @@ description_en: "A client-side tool that identifies which hash algorithm (MD5, S
 
 category_ja:
   - 現代暗号
+  - ハッシュ関数
 category_en:
-  - Mordern cryptography
+  - Mordern Cryptography
+  - Hash Function
 
 difficulty: 1
 
