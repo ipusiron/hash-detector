@@ -1,3 +1,39 @@
+<!--
+---
+id: day002
+slug: hash-detector
+
+title: "Hash Identifier"
+
+subtitle_ja: "ハッシュ種別判定ツール"
+subtitle_en: "Hash Algorithm Identification Tool"
+
+description_ja: "入力されたハッシュ値がどのアルゴリズム（MD5, SHA-1, SHA-256など）で生成されたものかを推測するクライアントサイドツール"
+description_en: "A client-side tool that identifies which hash algorithm (MD5, SHA-1, SHA-256, etc.) was likely used to generate an input string"
+
+category_ja:
+  - 現代暗号
+category_en:
+  - Mordern cryptography
+
+difficulty: 1
+
+tags:
+  - hash
+  - md5
+  - sha1
+  - sha256
+  - bcrypt
+  - ntlm
+  - hashcat
+
+repo_url: "https://github.com/ipusiron/hash-detector"
+demo_url: "https://ipusiron.github.io/hash-detector/"
+
+hub: true
+---
+-->
+
 # 🔍 ハッシュ識別ツール（Hash Identifier）
 
 **Day 2 - セキュリティツールをAIで作ってみよう 100日チャレンジ**

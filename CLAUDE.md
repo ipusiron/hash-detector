@@ -23,14 +23,14 @@ This is a client-side hash identifier tool that analyzes input strings to determ
 ## Hash Detection Logic
 
 The tool identifies hashes using regex patterns in `script.js`:
-- MD5: 32 hex characters
-- SHA-1: 40 hex characters  
-- SHA-256: 64 hex characters
-- SHA-512: 128 hex characters
-- bcrypt: Starts with `$2a$`, `$2b$`, etc.
-- NTLM: 32 uppercase hex characters
+- MD5: 32 hex characters (Hashcat mode: 0)
+- SHA-1: 40 hex characters (Hashcat mode: 100)
+- SHA-256: 64 hex characters (Hashcat mode: 1400)
+- SHA-512: 128 hex characters (Hashcat mode: 1700)
+- bcrypt: Starts with `$2a$`, `$2b$`, `$2y$` (Hashcat mode: 3200)
+- NTLM: 32 hex characters (Hashcat mode: 1000)
 
-The `identifyHash()` function processes input and updates the result display immediately.
+The `identifyHash()` function processes input and updates the result display immediately. Results include the detected hash type, reasoning, Hashcat mode number, and a link to CrackStation.
 
 ## Development Notes
 
