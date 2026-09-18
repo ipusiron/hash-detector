@@ -1,84 +1,105 @@
-function identifyHash() {
-  const input = document.getElementById('hashInput').value.trim();
-  const result = document.getElementById('result');
+'use strict';
 
-  const patterns = [
-    { name: 'MD5', regex: /^[a-f0-9]{32}$/i, hashcat: 0 },
-    { name: 'SHA-1', regex: /^[a-f0-9]{40}$/i, hashcat: 100 },
-    { name: 'SHA-256', regex: /^[a-f0-9]{64}$/i, hashcat: 1400 },
-    { name: 'SHA-512', regex: /^[a-f0-9]{128}$/i, hashcat: 1700 },
-    { name: 'bcrypt', regex: /^\$2[aby]?\$[0-9]{2}\$[./A-Za-z0-9]{53}$/, hashcat: 3200 },
-    { name: 'NTLM', regex: /^[A-Fa-f0-9]{32}$/, hashcat: 1000 }
-  ];
-
-  if (input === '') {
-    result.textContent = '';
-    return;
-  }
-
-  const match = patterns.find(p => p.regex.test(input));
-
-  if (match) {
-    let reason = '';
-
-    if (match.name === 'MD5') {
-      reason = '32文字の16進数 → MD5の形式と一致';
-    } else if (match.name === 'SHA-1') {
-      reason = '40文字の16進数 → SHA-1形式と一致';
-    } else if (match.name === 'SHA-256') {
-      reason = '64文字の16進数 → SHA-256形式と一致';
-    } else if (match.name === 'SHA-512') {
-      reason = '128文字の16進数 → SHA-512形式と一致';
-    } else if (match.name === 'bcrypt') {
-      reason = '先頭が $2a$ / $2b$ など → bcrypt形式';
-    } else if (match.name === 'NTLM') {
-      reason = '32文字の英大文字 → NTLM形式の可能性';
-    }
-
-    result.innerHTML = `
-    このハッシュはおそらく「${match.name}」です。<br>
-    🔎 判定根拠：${reason}<br>
-    💻 Hashcat mode: ${match.hashcat}<br>
-    <a href="https://crackstation.net/" target="_blank" rel="noopener noreferrer">🔗 CrackStationを開く</a>
-    <button onclick="copyHash()">📋 コピー</button>
-  `;
-  } else {
-    result.textContent = 'ハッシュの形式を特定できませんでした。';
-  }
-}
-
-function setHash(el) {
+(function () {
   const inputBox = document.getElementById('hashInput');
-  inputBox.value = el.textContent;
-  identifyHash();
-}
+  const result = document.getElementById('result');
+  const message = document.getElementById('message');
+  let announceTimer;
+  let hideTimer;
 
-function showMessage(text) {
-  const messageEl = document.getElementById('message');
-  if (messageEl) {
-    // Clear previous message to ensure screen readers announce updates
-    messageEl.textContent = '';
-    setTimeout(() => {
-      messageEl.textContent = text;
+  function element(tag, text, className) {
+    const node = document.createElement(tag);
+    node.textContent = text;
+    if (className) node.className = className;
+    return node;
+  }
+
+  function showMessage(text) {
+    clearTimeout(announceTimer);
+    clearTimeout(hideTimer);
+    message.textContent = '';
+    message.classList.remove('is-visible');
+    // Repeated copies should also be announced by the status live region.
+    announceTimer = setTimeout(() => {
+      message.textContent = text;
+      message.classList.add('is-visible');
+      hideTimer = setTimeout(() => {
+        message.classList.remove('is-visible');
+        message.textContent = '';
+      }, 3000);
     }, 0);
   }
-}
 
-function copyHash() {
-  const hash = document.getElementById('hashInput').value.trim();
-  navigator.clipboard.writeText(hash).then(() => {
-    alert("ハッシュをコピーしました！");
-    showMessage('ハッシュをコピーしました！');
-  }).catch(err => {
-    alert("コピーに失敗しました：" + err);
-    showMessage('コピーに失敗しました: ' + err);
+  async function copyText(text) {
+    try {
+      if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
+        showMessage('コピーに失敗しました');
+        return;
+      }
+      await navigator.clipboard.writeText(text);
+      showMessage('コピーしました');
+    } catch {
+      showMessage('コピーに失敗しました');
+    }
+  }
+
+  function copyButton(label, accessibleLabel, text) {
+    const button = element('button', label);
+    button.type = 'button';
+    button.setAttribute('aria-label', accessibleLabel);
+    button.addEventListener('click', () => copyText(text));
+    return button;
+  }
+
+  function identifyHash() {
+    const identified = HashIdentifier.identify(inputBox.value);
+    result.replaceChildren();
+    if (identified.candidates.length === 0) {
+      const unsupported = identified.kind === 'hex'
+        ? `16進 ${identified.hexLength} 文字ですが、対応表にない長さです。` : '';
+      result.append(element('p', unsupported + identified.caveat));
+      return;
+    }
+
+    result.append(element('h2', '候補（可能性の高い順）'));
+    result.append(element('p', identified.kind === 'prefix' ? '確度：高（接頭辞の形式）' : '確度：形式のみ'));
+    result.append(element('p', '候補順は対応表の掲載順であり、確率を計算したものではありません。'));
+    for (const candidate of identified.candidates) {
+      const block = element('section', '', 'candidate');
+      block.append(element('h3', candidate.name));
+      block.append(element('p', `hashcatモード：${candidate.hashcat === null ? '—（要確認）' : candidate.hashcat}`));
+      block.append(element('p', candidate.note));
+      if (candidate.hashcat !== null) {
+        const command = `hashcat -m ${candidate.hashcat} -a 0 hash.txt wordlist.txt`;
+        const commandRow = element('div', '', 'command');
+        commandRow.append(element('code', command));
+        commandRow.append(copyButton('コマンドをコピー', `hashcat コマンドをコピー: ${candidate.name}`, command));
+        block.append(commandRow);
+      }
+      result.append(block);
+    }
+    result.append(element('p', identified.caveat, 'caveat'));
+    const links = element('p', '', 'reference-links');
+    for (const [label, url] of [
+      ['🔗 CrackStation を開く', 'https://crackstation.net/'],
+      ['🔗 hashcat の例ハッシュ一覧', 'https://hashcat.net/wiki/doku.php?id=example_hashes']
+    ]) {
+      const link = element('a', label);
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      links.append(link);
+    }
+    result.append(links);
+    result.append(copyButton('📋 ハッシュをコピー', 'ハッシュをコピー', identified.input));
+  }
+
+  inputBox.addEventListener('input', identifyHash);
+  document.querySelectorAll('.sample').forEach(button => {
+    button.addEventListener('click', () => {
+      inputBox.value = button.dataset.hash;
+      identifyHash();
+    });
   });
-}
-
-// 🔄 入力に応じて即時判定
-document.getElementById('hashInput').addEventListener('input', identifyHash);
-
-// 🔁 HTMLから setHash() を呼べるように公開
-window.setHash = setHash;
-
-window.copyHash = copyHash;
+  identifyHash();
+}());

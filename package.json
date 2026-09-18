@@ -1,0 +1,7 @@
+{
+  "name": "hash-detector",
+  "private": true,
+  "scripts": {
+    "test": "node --test"
+  }
+}
