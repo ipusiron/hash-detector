@@ -11,23 +11,27 @@
 </head>
 <body>
 
-  <h1>🔍 ハッシュ識別ツール</h1>
+  <div class="toolbar">
+    <button id="langToggle" type="button" data-i18n="app.langButton" data-i18n-aria-label="app.langAria">English</button>
+  </div>
 
-  <p>入力されたハッシュ値の形式から、アルゴリズムの候補とhashcatのモード番号を表示します。同じ長さの16進文字列から1つに断定はできません。</p>
-  <noscript>このツールは JavaScript が必要です</noscript>
+  <h1 data-i18n="app.heading">🔍 ハッシュ識別ツール</h1>
 
-  <label for="hashInput">ハッシュ値を入力:</label>
-  <input type="text" id="hashInput" placeholder="ハッシュ値を入力してください" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off">
+  <p data-i18n="app.intro">入力されたハッシュ値の形式から、アルゴリズムの候補とhashcatのモード番号を表示します。同じ長さの16進文字列から1つに断定はできません。</p>
+  <noscript>このツールは JavaScript が必要です / This tool requires JavaScript</noscript>
+
+  <label for="hashInput" data-i18n="input.label">ハッシュ値を入力:</label>
+  <input type="text" id="hashInput" placeholder="ハッシュ値を入力してください" data-i18n-placeholder="input.placeholder" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off">
 
   <div id="result" aria-live="polite" aria-atomic="true"></div>
   <div id="message" role="status" aria-live="polite" aria-atomic="true" class="message"></div>
 
-  <h2>🧪 テスト用ハッシュ一覧</h2>
-  <p>ボタンを押すと入力できます。サンプルの平文はすべて「hashcat」です。</p>
+  <h2 data-i18n="samples.heading">🧪 テスト用ハッシュ一覧</h2>
+  <p data-i18n="samples.intro">ボタンを押すと入力できます。サンプルの平文はすべて「hashcat」です。</p>
   <ul class="samples">
     <li><button type="button" class="sample" data-hash="8743b52063cd84097a65d1633f5c74f5" data-expect="MD5">MD5<code>8743b52063cd84097a65d1633f5c74f5</code></button></li>
     <li><button type="button" class="sample" data-hash="b89eaac7e61417341b710b727768294d0e6a277b" data-expect="SHA-1">SHA-1<code>b89eaac7e61417341b710b727768294d0e6a277b</code></button></li>
-    <li><button type="button" class="sample" data-hash="b4b9b02e6f09a9bd760f388b67351e2b" data-expect="NTLM">NTLM（形式は MD5 と同じ）<code>b4b9b02e6f09a9bd760f388b67351e2b</code></button></li>
+    <li><button type="button" class="sample" data-hash="b4b9b02e6f09a9bd760f388b67351e2b" data-expect="NTLM"><span data-i18n="samples.ntlm">NTLM（形式は MD5 と同じ）</span><code>b4b9b02e6f09a9bd760f388b67351e2b</code></button></li>
     <li><button type="button" class="sample" data-hash="127e6fbfe24a750e72930c220a8e138275656b8e5d8f48a98c3c92df2caba935" data-expect="SHA-256">SHA-256<code>127e6fbfe24a750e72930c220a8e138275656b8e5d8f48a98c3c92df2caba935</code></button></li>
     <li><button type="button" class="sample" data-hash="82a9dda829eb7f8ffe9fbe49e45d47d2dad9664fbb7adf72492e3c81ebd3e29134d9bc12212bf83c6840f10e8246b9db54a4859b7ccd0123d86e5872c1e5082f" data-expect="SHA-512">SHA-512<code>82a9dda829eb7f8ffe9fbe49e45d47d2dad9664fbb7adf72492e3c81ebd3e29134d9bc12212bf83c6840f10e8246b9db54a4859b7ccd0123d86e5872c1e5082f</code></button></li>
     <li><button type="button" class="sample" data-hash="$2a$05$LhayLxezLhK1LhWvKxCyLOj0j1u.Kj0jZ0pEmm134uzrQlFvQJLF6" data-expect="bcrypt">bcrypt<code>$2a$05$LhayLxezLhK1LhWvKxCyLOj0j1u.Kj0jZ0pEmm134uzrQlFvQJLF6</code></button></li>
@@ -37,6 +41,7 @@
     <li><button type="button" class="sample" data-hash="$P$9d2OMJEOHyPg11MeSv46hashcatG.F1" data-expect="phpass">phpass<code>$P$9d2OMJEOHyPg11MeSv46hashcatG.F1</code></button></li>
   </ul>
 
+  <script src="i18n.js" defer></script>
   <script src="identify.js" defer></script>
   <script src="script.js" defer></script>
 </body>

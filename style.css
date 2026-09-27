@@ -136,3 +136,12 @@ code {
     transition: none;
   }
 }
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.toolbar button {
+  margin-top: 0;
+}
