@@ -109,7 +109,7 @@ test('empty and unknown inputs return none with the exact caveat', () => {
   for (const input of ['', ' \n\t ', 'hello', '<img src=x onerror=alert(1)>', 'ab cd', '0x1234']) {
     assert.deepEqual(identify(input), {
       input: input.trim(), kind: 'none', hexLength: null, candidates: [],
-      caveat: '対応している形式に一致しませんでした'
+      caveat: { key: 'caveat.none', params: {} }
     });
   }
 });
@@ -119,7 +119,7 @@ test('hex caveat, including unsupported lengths, never claims an algorithm', () 
     const result = identify('A'.repeat(length));
     assert.equal(result.kind, 'hex');
     assert.equal(result.hexLength, length);
-    assert.equal(result.caveat, '形式（16進 ' + length + ' 文字）だけからの推定です。同じ長さのハッシュは他にもあり、アルゴリズムは断定できません。大文字・小文字の違いは表記の慣習で、判定材料にはなりません');
+    assert.deepEqual(result.caveat, { key: 'caveat.hex', params: { length } });
     if (!expectedHex[length]) assert.deepEqual(result.candidates, []);
   }
 });
@@ -127,9 +127,9 @@ test('hex caveat, including unsupported lengths, never claims an algorithm', () 
 test('prefix caveat and candidate shape; no hex candidates mixed in', () => {
   for (const [, , input] of vectors.filter(([, , value]) => !/^[0-9a-f]+$/i.test(value))) {
     const result = identify(input);
-    assert.equal(result.caveat, '接頭辞の形式から判別しました');
+    assert.deepEqual(result.caveat, { key: 'caveat.prefix', params: {} });
     assert.equal(result.candidates.length, 1);
-    assert.deepEqual(Object.keys(result.candidates[0]), ['name', 'hashcat', 'note']);
+    assert.deepEqual(Object.keys(result.candidates[0]), ['name', 'nameKey', 'hashcat', 'note']);
   }
 });
 

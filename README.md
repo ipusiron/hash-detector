@@ -41,6 +41,8 @@ hub: true
 
 # Hash Identifier - ハッシュ識別ツール
 
+[English](README.en.md) · 日本語
+
 ![GitHub Repo stars](https://img.shields.io/github/stars/ipusiron/hash-detector?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/ipusiron/hash-detector?style=social)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ipusiron/hash-detector)
@@ -127,16 +129,20 @@ hub: true
 2. ハッシュ値を入力すると同時に、候補・hashcatモード・注意点を表示
 3. テスト用ハッシュのボタンを押して、候補の表示を確認
 4. 「コマンドをコピー」または「ハッシュをコピー」で必要な文字列をコピー
+5. 右上のボタンで日本語と英語を切り替え
 
 前後の空白は除去しますが、大文字・小文字は変更しません。
 モードが未確認の候補にはコマンドを表示しません。
 コマンド例の`hash.txt`と`wordlist.txt`は、自分で用意するファイルです。ハッシュのコピーは入力値をそのままコピーするため、MySQL・LM・CRC32・BLAKE2の入力形式は候補の注意点に従って調整してください。
 コピー結果は数秒間トーストで表示します。Clipboard APIを利用できない環境では「コピーに失敗しました」と表示し、判定は続けて利用できます。
 
+画面の言語は右上のボタンで日本語と英語を切り替えられます。初回は`?lang=ja`・`?lang=en`のクエリ、次にブラウザーの言語設定を見て決めます。選んだ言語はlocalStorageに保存し、次回以降も引き継ぎます。入力中や判定の表示中に切り替えても、入力値と候補はそのまま残ります。
+
 ## 🔬 判定の仕組みと限界
 
 最初に接頭辞付きのパターンを確認し、一致した場合はその形式だけを返します。
 それ以外は16進のみの文字列かを確認し、長さに対応する候補を列挙します。未対応の長さの場合は文字数を表示します。
+入力欄が空のときは何も表示しません（結果欄は読み上げ対象のため、入力前に「一致しませんでした」と読み上げないようにしています）。
 確度は接頭辞付きでは「高」、16進のみでは「形式のみ」と表示しますが、生成元やハッシュ値の正当性を保証するものではありません。
 「候補（可能性の高い順）」の掲載順は対応表の順序で、確率を計算した順位ではありません。
 
@@ -164,6 +170,7 @@ npm test
 ```
 
 Node.js標準の`node --test`で、既知ベクター、候補の順序、接頭辞、空入力、未対応形式などを検証します。
+日本語・英語の辞書についても、キーの集合の一致、差し込みの整合、HTMLとスクリプトが指すキーの実在、英語辞書への和文の混入、状態の判定を文言の一致で行っていないことを検証します。
 READMEの対応表とコードの名前・モード番号、画面の10件のサンプルと候補もテストで照合します。
 GitHub Actionsでもpushとpull_requestのたびにNode.js 22で自動実行します。
 
@@ -173,7 +180,7 @@ GitHub Actionsでもpushとpull_requestのたびにNode.js 22で自動実行し�
 
 このツールは完全にクライアントサイドで動作し、入力データの送信・保存は行いません。
 判定のための通信や外部APIへの照会はありません。HTTPで開いたときのHTML・JavaScript・CSSの読み込みと、利用者が選んだ外部リンクへの移動は別です。
-入力値は入力欄と判定処理で扱いますが、CookieやWeb Storageへは保存しません。
+入力値は入力欄と判定処理で扱いますが、CookieやWeb Storageへは保存しません。localStorageに保存するのは、選んだ表示言語（`hash-detector-language`）だけです。
 
 CSPで読み込み元を制限し、インラインのイベントハンドラーやスタイルは使用しません。referrerは`no-referrer`に設定しています。
 結果の組み立てには`createElement`と`textContent`を使用します。
@@ -192,10 +199,12 @@ hash-detector/
 │       └── test.yml    # push・pull_request時の自動テスト
 ├── test/
 │   ├── identify.test.js # 既知ベクター・候補・モード番号の検証
+│   ├── i18n.test.js     # 辞書の対応・キーの実在・切り替えの配線の検証
 │   ├── readme.test.js   # README対応表とコードの一致検証
 │   └── html.test.js     # サンプル・CSP・アクセシビリティの検証
 ├── .gitignore          # Gitの追跡対象外設定
 ├── index.html          # 入力欄・結果・サンプルボタン
+├── i18n.js             # 日本語・英語の辞書と切り替え
 ├── identify.js         # DOMに依存しない判定モジュール
 ├── script.js           # DOM操作・コピー・トースト通知
 ├── style.css           # モバイル表示・折り返し・フォーカス
@@ -203,7 +212,8 @@ hash-detector/
 ├── screen_sample.png   # 32文字の16進ハッシュから4候補を表示した画面
 ├── screen_bcrypt.png   # 接頭辞からbcrypt形式を識別した画面
 ├── CLAUDE.md           # 構成・判定仕様・開発手順
-├── README.md           # 本ドキュメント
+├── README.md           # 本ドキュメント（日本語）
+├── README.en.md        # 英語版ドキュメント
 └── LICENSE             # MITライセンス
 ```
 

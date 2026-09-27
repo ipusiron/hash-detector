@@ -22,13 +22,14 @@ test('viewport, CSP, referrer and description metadata', () => {
 });
 
 test('classic deferred scripts are ordered and no inline code or styles remain', () => {
+  const i18n = html.indexOf('<script src="i18n.js" defer>');
   const first = html.indexOf('<script src="identify.js" defer>');
   const second = html.indexOf('<script src="script.js" defer>');
-  assert.ok(first >= 0 && second > first);
+  assert.ok(i18n >= 0 && first > i18n && second > first);
   assert.doesNotMatch(html, /\stype=["']module["']/i);
   assert.doesNotMatch(html, /\son[a-z]+\s*=/i);
   assert.doesNotMatch(html, /\sstyle\s*=/i);
-  assert.equal([...html.matchAll(/<script\b/g)].length, 2);
+  assert.equal([...html.matchAll(/<script\b/g)].length, 3);
   assert.doesNotMatch(html, /<style\b/i);
   assert.doesNotMatch(script, /innerHTML|alert\s*\(|window\.(?:copyHash|setHash)\s*=/);
 });
@@ -47,10 +48,11 @@ test('all ten accessible sample buttons contain their expected candidate and dis
 test('input attributes, result live region, visible status toast and noscript', () => {
   const input = html.match(/<input\b[^>]*\bid="hashInput"[^>]*>/)[0];
   for (const attribute of ['spellcheck="false"', 'autocomplete="off"', 'autocapitalize="off"', 'autocorrect="off"']) assert.ok(input.includes(attribute));
-  assert.match(html, /<label for="hashInput">/);
+  assert.match(html, /<label for="hashInput" data-i18n="input\.label">/);
   assert.match(html, /<div id="result" aria-live="polite" aria-atomic="true">/);
   assert.match(html, /<div id="message" role="status" aria-live="polite" aria-atomic="true" class="message">/);
-  assert.match(html, /<noscript>このツールは JavaScript が必要です<\/noscript>/);
+  // noscript は JS が動かない環境で読まれるため、切り替えボタンが使えない。両言語を併記する
+  assert.match(html, /<noscript>このツールは JavaScript が必要です \/ This tool requires JavaScript<\/noscript>/);
   assert.match(script, /setAttribute\('aria-label'/);
   assert.match(script, /navigator\.clipboard\.writeText/);
   assert.match(script, /noopener noreferrer/);
