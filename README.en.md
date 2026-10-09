@@ -135,6 +135,20 @@ GitHub Actions runs the same suite on Node.js 22 for every push and pull request
 
 ---
 
+## 🎯 Use cases
+
+### Ways of using this tool in particular
+
+- Confirming that length alone does not pin down the type (encoding and hashing classes): entering a 32-hex-digit string lists four candidates, MD5, NTLM, MD4 and LM. A 64-hex-digit one gives SHA-256, SHA3-256, Keccak-256 and BLAKE2s-256. Since several hashes share a length, you can confirm by the number of candidates that length alone cannot narrow the type to one
+- Confirming that a prefix narrows it to one (format classes): a 60-character string starting with `$2b$` is pinned down to bcrypt by its prefix. You can confirm that a fixed-format marker (a prefix), not the length, brings the candidates down to one
+- Confirming that identifying is separate from cracking (analysis classes): each candidate shows the mode number of the cracking tool hashcat (MD5 is 0, NTLM is 1000, MD4 is 900). That is a hint of "use this number if you crack it", and identifying the type is not cracking. You can show that identifying (classifying) and cracking (reversing) are different tasks
+
+### General uses
+
+- In a CTF or an investigation, make a first guess at the type of an unknown hash-like string
+- Use it as material for telling apart the formats of hash values mixed into logs or a database
+- Use it as an entry point to check the formats of hashes your service stores and whether a weak scheme is in use
+
 ## 🔒 Security and privacy
 
 The tool is entirely client-side. Nothing you type is sent anywhere or stored. There is no lookup against an external API.

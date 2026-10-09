@@ -44,3 +44,20 @@ test('CLAUDE points to the maintained table and documents the same API and const
     assert.ok(claude.includes(term), term);
   }
 });
+
+test('ユースケースの「このツールならではの使い方」を identify() で再計算（日英）', () => {
+  const en = readFileSync(join(__dirname, '../README.en.md'), 'utf8');
+  const md5 = require('../identify.js').identify('5f4dcc3b5aa765d61d8327deb882cf99');
+  assert.equal(md5.hexLength, 32);
+  assert.deepEqual(md5.candidates.map((c) => c.name), ['MD5', 'NTLM', 'MD4', 'LM']);
+  const sha = require('../identify.js').identify('a'.repeat(64));
+  assert.deepEqual(sha.candidates.map((c) => c.name), ['SHA-256', 'SHA3-256', 'Keccak-256', 'BLAKE2s-256']);
+  const bcrypt = require('../identify.js').identify('$2b$12$' + 'a'.repeat(53));
+  assert.deepEqual(bcrypt.candidates.map((c) => c.name), ['bcrypt']);
+  const modes = Object.fromEntries(md5.candidates.map((c) => [c.name, c.hashcat]));
+  assert.deepEqual([modes.MD5, modes.NTLM, modes.MD4], [0, 1000, 900]);
+  for (const md of [readme, en]) {
+    assert.ok(md.includes('MD5') && md.includes('NTLM') && md.includes('bcrypt'));
+    assert.ok(md.includes('$2b$'));
+  }
+});
