@@ -18,7 +18,7 @@ category_en:
   - Modern Cryptography
   - Hash Function
 
-difficulty: 1
+difficulty: 2
 
 tags:
   - hash
